@@ -1,0 +1,39 @@
+Подготовка к установке Magento2
+Нужно создать файл конфига в папке /etc/apache2/sites-available/.
+
+Я запускаю от рута программу Double Commander и создаю нужный файл. У вас его нет, то можно установить.
+
+#установить Double Commander
+sudo apt install doublecmd-qt
+#double commander open as root
+sudo doublecmd
+#Create new project virtual host file
+/etc/apache2/sites-available/magento2.conf
+Содержимое файла magento2.conf:
+
+<VirtualHost *:80>
+	ServerAdmin admin@magento2.loc
+	ServerName magento2.loc
+	ServerAlias magento2.loc
+	DocumentRoot /var/www/magento2.loc/pub
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
+	<Directory /var/www/magento2.loc/pub>
+		Options Indexes FollowSymLinks MultiViews
+		AllowOverride All
+		Order allow,deny
+		allow from all
+	</Directory>
+</VirtualHost>
+#Применить новую конфигурацию:
+sudo a2ensite magento2.conf
+#И перегрузим apache2
+systemctl reload apache2
+Добавим наш локальный сайт в hosts.
+
+127.0.0.1 magento2.loc
+#Стандартный редактор
+sudo nano /etc/hosts
+# У меня сторонний bluefish
+sudo apt install bluefish
+sudo bluefish /etc/hosts
